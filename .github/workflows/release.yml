@@ -41,13 +41,14 @@ jobs:
           name: ${{ matrix.os }}
           path: dist
 
-      - name: Create GitHub Release
-        uses: ncipollo/release-action@v1
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          artifacts: "dist/**"
-          token: ${{ secrets.GITHUB_TOKEN }} # Use the GH_TOKEN secret here
-          tag: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: "Automated release from GitHub Actions"
-          draft: false
-          prerelease: false
+          files: |
+            ./dist/** 
+          body: |
+            Release for version ${{ github.ref }}
+            See the release notes for details.
