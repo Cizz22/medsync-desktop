@@ -32,8 +32,8 @@ catch (error) {
 electron_1.app.on('ready', () => {
     const url = config.url;
     const mainWindow = new electron_1.BrowserWindow({
-        width: 1200,
-        height: 1050,
+        width: 1440,
+        height: 900,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: false,
@@ -51,8 +51,8 @@ electron_1.app.on('activate', () => {
     if (electron_1.BrowserWindow.getAllWindows().length === 0) {
         const url = config.url;
         const mainWindow = new electron_1.BrowserWindow({
-            width: 1200,
-            height: 1050,
+            width: 1440,
+            height: 900,
             webPreferences: {
                 nodeIntegration: false,
                 contextIsolation: false,
