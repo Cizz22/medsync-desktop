@@ -1,0 +1,69 @@
+{
+  "private": true,
+  "name": "medsync",
+  "description": "Aplikasi migrasi data untuk memenuhi kebutuhan integrasi data antar rumah sakit",
+  "version": "0.0.1",
+  "author": "Aulia Cisatra",
+  "main": "main/index.js",
+  "scripts": {
+    "dev": "electron .",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "clean": "rimraf dist renderer/.next main/*.js main/**/*.js",
+    "build:main": "tsc -p main"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.7",
+    "axios": "^1.2.3",
+    "clsx": "^1.2.1",
+    "electron-is-dev": "^1.1.0",
+    "electron-serve": "^1.1.0",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^5.3.0",
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "electron": "^21.3.3",
+    "electron-builder": "^23.6.0",
+    "eslint": "8.32.0",
+    "eslint-config-next": "13.1.2",
+    "typescript": "^4.9.4"
+  },
+  "build": {
+    "appId": "com.cisatra.medsync",
+    "productName": "Medsync - Medical Syncronation",
+    "files": [
+      "main/*.js"
+    ],
+    "extraResources": [
+      {
+        "filter": [
+          "./main/config.json"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm",
+        "tar.gz",
+        "zip"
+      ]
+    }
+  }
+}
