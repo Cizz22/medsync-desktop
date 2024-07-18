@@ -1,5 +1,6 @@
 name: Build and Release
-
+permissions:
+  contents: write
 on:
   push:
     tags:
@@ -48,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            ./dist/** 
+            ./dist/**
           body: |
             Release for version ${{ github.ref }}
             See the release notes for details.
