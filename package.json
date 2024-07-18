@@ -3,7 +3,10 @@
   "name": "medsync",
   "description": "Aplikasi migrasi data untuk memenuhi kebutuhan integrasi data antar rumah sakit",
   "version": "0.0.1",
-  "author": "Aulia Cisatra",
+  "author": {
+    "name": "Aulia Cisatra",
+    "email": "cisatraa@gmail.com"
+  },
   "main": "main/index.js",
   "scripts": {
     "dev": "electron .",

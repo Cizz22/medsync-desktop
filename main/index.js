@@ -3,25 +3,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Packages
 const electron_1 = require("electron");
-const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+// Get the path to the directory containing the executable
+const appPath = electron_1.app.getPath('exe');
+const appDir = path_1.default.dirname(appPath);
+const configFilePath = path_1.default.join(appDir, 'config.json');
 // Default configuration
 const defaultConfig = {
-    medsync_client_url: "https://9ndjthbw-3000.asse.devtunnels.ms/"
+    url: "https://9ndjthbw-3000.asse.devtunnels.ms/"
 };
-const configPath = path_1.default.join(path_1.default.dirname(__dirname), 'extraResources', 'config.json');
+// Ensure the configuration file exists
+if (!fs_1.default.existsSync(configFilePath)) {
+    fs_1.default.writeFileSync(configFilePath, JSON.stringify(defaultConfig, null, 2));
+}
+// Read the configuration file
 let config;
 try {
-    config = JSON.parse((0, fs_1.readFileSync)(configPath, 'utf-8'));
+    const configFile = fs_1.default.readFileSync(configFilePath, 'utf-8'); // Specify encoding to get a string
+    config = JSON.parse(configFile);
 }
 catch (error) {
     console.error('Failed to read the configuration file:', error);
     config = defaultConfig; // Fallback to default config in case of error
 }
+// Prepare the renderer once the app is ready
 electron_1.app.on('ready', () => {
-    const url = config.medsync_client_url;
+    const url = config.url;
     const mainWindow = new electron_1.BrowserWindow({
         width: 1200,
         height: 1050,
@@ -40,7 +49,7 @@ electron_1.app.on('window-all-closed', () => {
 });
 electron_1.app.on('activate', () => {
     if (electron_1.BrowserWindow.getAllWindows().length === 0) {
-        const url = config.medsync_client_url;
+        const url = config.url;
         const mainWindow = new electron_1.BrowserWindow({
             width: 1200,
             height: 1050,

@@ -1,29 +1,40 @@
-// Packages
-import { BrowserWindow, app } from 'electron'
-import { readFileSync } from 'fs';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import fs from 'fs';
 
-interface config {
-    medsync_client_url: string
+// Get the path to the directory containing the executable
+const appPath = app.getPath('exe');
+const appDir = path.dirname(appPath);
+const configFilePath = path.join(appDir, 'config.json');
+
+interface Config {
+    url: string;
 }
-
 // Default configuration
-const defaultConfig = {
-    medsync_client_url: "https://9ndjthbw-3000.asse.devtunnels.ms/"
+const defaultConfig: Config = {
+    url: "https://9ndjthbw-3000.asse.devtunnels.ms/"
 };
 
-const configPath = path.join(path.dirname(__dirname), 'extraResources', 'config.json');
+// Ensure the configuration file exists
+if (!fs.existsSync(configFilePath)) {
+    fs.writeFileSync(configFilePath, JSON.stringify(defaultConfig, null, 2));
+}
 
-let config: config;
+
+
+// Read the configuration file
+let config: Config;
 try {
-    config = JSON.parse(readFileSync(configPath, 'utf-8'));
+    const configFile = fs.readFileSync(configFilePath, 'utf-8'); // Specify encoding to get a string
+    config = JSON.parse(configFile);
 } catch (error) {
     console.error('Failed to read the configuration file:', error);
     config = defaultConfig; // Fallback to default config in case of error
 }
 
+// Prepare the renderer once the app is ready
 app.on('ready', () => {
-    const url = config.medsync_client_url;
+    const url = config.url;
 
     const mainWindow = new BrowserWindow({
         width: 1200,
@@ -46,7 +57,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        const url = config.medsync_client_url;
+        const url = config.url;
 
         const mainWindow = new BrowserWindow({
             width: 1200,
