@@ -32,16 +32,6 @@ jobs:
       - name: Package Electron app
         run: npm run dist
 
-      - name: Cleanup artifacts
-        run: |
-          npx rimraf "dist/!(*.exe|*.deb|*.AppImage|*.dmg)"
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: ${{ matrix.os }}
-          path: dist
-
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
